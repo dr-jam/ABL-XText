@@ -1,0 +1,9 @@
+grammar sing.ABL with org.eclipse.xtext.common.Terminals
+
+generate aBL "http://www.ABL.sing"
+
+Model:
+	greetings+=Greeting*;
+	
+Greeting:
+	'Hello' name=ID '!';
