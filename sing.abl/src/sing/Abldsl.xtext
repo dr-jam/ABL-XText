@@ -1,0 +1,119 @@
+grammar sing.ABL with org.eclipse.xtext.xbase.Xbase
+
+generate aBL "http://www.ABL.sing"
+
+Model:
+	('package' name=QualifiedName ';')?
+	((imports+=ImportDeclaration) | (constants+=ConstantDeclaration))*
+	'behaving_entity' behavingEntityName=ID '{'
+	(teamNeededForSuccessDefault=TeamNeededForSuccessDefaultDeclaration)?
+	(decisionCycleSMCall=DecisionCycleSMCallDelcaration)?
+	(conflicits+=ConflictDeclaration)+
+	(ablDeclarations+=AblDeclaration)*
+	
+	//( BehaviorDefinition | Rule )* ( InitialTree ) <RBRACE> 
+	'}'
+	//EOF
+;
+
+ImportDeclaration:
+	'import' name=QualifiedName ';'
+;
+
+
+/*what exactly is going on here with ABL? 'constants' is a bit non-standard. */
+ConstantDeclaration:
+	'constants' name=QualifiedName ';'
+;
+
+TeamNeededForSuccessDefaultDeclaration:
+	'joint_goal_success_negotiation'
+	('team_needed_for_success' | 'one_needed_for_success')
+	';'
+;
+
+DecisionCycleSMCallDelcaration:
+	'decision_cycle_sm_call' name=QualifiedName ';'
+;
+
+ConflictDeclaration:
+	'conflict' (conflictNames+=ID)+ ';'
+;
+
+AblDeclaration:
+	(ablVariable=XVariableDeclaration ';')
+	| WMERegistration
+	| ActionRegistration
+	| WMEDeclaration
+	| PropertyDeclaration
+	
+;
+
+WMERegistration:
+	'register' 'wme' wmeClass=ID 'with' name=QualifiedName ';'
+;
+
+ActionRegistration:
+	'register' ('act' | ablName=ID) ablName2=ID 
+	'(' (types+=ABLSimpleType (',' types+=ABLSimpleType)*)? ')' 'with' actName=ID ';'
+;
+
+
+
+/*<WME> AblName ( <EXTENDS> AblName )? <LBRACE> (
+AblVariableDeclaration <SEMICOLON> )* <RBRACE> */
+WMEDeclaration:
+	'wme' varName=ID ('extends' extendName=ID)? 
+	'{' (ablVariableDeclaration+=XVariableDeclaration ';')* '}'
+;
+
+PropertyDeclaration:
+	'property' type=XTypeLiteral ablName=ID ';' 
+;
+
+
+/*
+BehaviorDefinition ::= ( BehaviorTypeModifier )* BehaviorType <BEHAVIOR> AblName
+<LPAREN> ( AblSimpleType AblSimpleType ( <COMMA> AblSimpleType
+AblSimpleType )* )? <RPAREN> <LBRACE> ( BehaviorModifiers )* (
+AblVariableDeclaration <SEMICOLON> )* ( BehaviorStep )* <RBRACE>
+*/
+
+/* Replaced with XVariableDeclaration */
+//AblVariableDelcaration:
+//	Type variables+=VariableDeclarator (',' variables+=VariableDeclarator)*
+//;
+
+/* Replaced with XVariableDeclaration */
+//VariableDeclarator:
+//	id=ID ('[]')* ('=' init=VariableInitializer)?
+//;
+
+/* Replaced with XVariableDeclaration */
+//VariableInitializer:
+//	( ArrayInitializer | Expression )
+//;
+
+/* Replaced with XVariableDeclaration */
+//Expression:
+//	
+//;
+
+/* Replaced with XVariableDeclaration */
+//ArrayInitializer:
+//	"{" (VariableInitializer (',' VariableInitializer)*)? (',')	
+//;
+
+
+ABLSimpleType:
+	PrimitiveType | ID
+;
+
+
+Type:
+	(type=PrimitiveType | type=QualifiedName) ('[]')*
+;
+
+PrimitiveType:
+	( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' )
+;
