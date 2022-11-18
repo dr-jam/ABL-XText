@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.emf.common,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Export-Package: sing.aBL,
+Export-Package: sing.ABL,
  sing.jvmmodel,
  sing.serializer,
  sing.services,
@@ -27,5 +27,6 @@ Export-Package: sing.aBL,
  sing.scoping,
  sing,
  sing.parser.antlr.internal,
- sing.aBL.impl
+ sing.aBL.impl,
+ sing.aBL
 Import-Package: org.apache.log4j

@@ -72,12 +72,48 @@ PropertyDeclaration:
 ;
 
 
+BehaviorDefinition: 
+	(BehaviorTypeModifier)*BehaviorType 'behavior' behaviorName=ID '(' 
+	(ABLSimpleType)*)? ')' '{' (BehaviorModifiers)*(AblVariableDeclaration ';')*
+	(BehaviorStep)* '}'
+;
+
 /*
 BehaviorDefinition ::= ( BehaviorTypeModifier )* BehaviorType <BEHAVIOR> AblName
 <LPAREN> ( AblSimpleType AblSimpleType ( <COMMA> AblSimpleType
 AblSimpleType )* )? <RPAREN> <LBRACE> ( BehaviorModifiers )* (
 AblVariableDeclaration <SEMICOLON> )* ( BehaviorStep )* <RBRACE>
 */
+
+BehaviorTypeModifier:
+	'atomic' | 'joint' | 'adaptive'
+;
+
+BehaviorType:
+	'sequential' | 'parallel' | 'collection'
+;
+
+
+//( Precondition | Specificity | ContextCondition | EntryCondition |
+//NumberNeededForSuccess | TeamMemberSpecifier | SuccessCondition |
+//ReinforcementSignals | ReinforcementState )
+BehaviorModifiers:
+	(Precondition | Specificity | ContextCondition | EntryCondition |
+	NumberNeededForSuccess | TeamMemberSpecifier | SuccessCondition |
+	ReinforcementSignals | ReinforcementState )
+;
+
+Precondition:
+	'precondition' '{' TestExpression '}'
+;
+
+TestExpression:
+	(identifier=ID)?(WMETestSequence)+
+;
+
+WMETestSequence:
+	'{' identifier=ID (WMETest | '(' ConditionalExpression ')' )+ '}'
+;
 
 /* Replaced with XVariableDeclaration */
 //AblVariableDelcaration:
