@@ -97,6 +97,7 @@ BehaviorType:
 //( Precondition | Specificity | ContextCondition | EntryCondition |
 //NumberNeededForSuccess | TeamMemberSpecifier | SuccessCondition |
 //ReinforcementSignals | ReinforcementState )
+
 BehaviorModifiers:
 	(Precondition | Specificity | ContextCondition | EntryCondition |
 	NumberNeededForSuccess | TeamMemberSpecifier | SuccessCondition |
@@ -114,6 +115,21 @@ TestExpression:
 WMETestSequence:
 	'{' identifier=ID (WMETest | '(' ConditionalExpression ')' )+ '}'
 ;
+
+
+WMETest:
+	('!')? (name=ID '=')? ')' WMEClass (WMEFieldTest)* ')'
+;
+
+WMEClass:
+	name=ID
+;
+
+WMEFieldTest:
+	id=ID (';:' | '>' | '<' | '==' | '<=' | '>=' | '!=') AblExpression
+;
+
+AblExpression
 
 /* Replaced with XVariableDeclaration */
 //AblVariableDelcaration:
